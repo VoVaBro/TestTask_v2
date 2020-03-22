@@ -29,6 +29,7 @@ button {
 .btn {
   text-decoration: none;
   color: white;
+  padding: 10px;
 }
 
 .btn:hover {
@@ -83,7 +84,7 @@ button {
 }
 
 .card {
-  background: white;
+  background: yellow;
   border-radius: 2px;
   display: inline-block;
   margin-right: 2em;
@@ -188,13 +189,6 @@ button {
   color: white;
 }
 
-.footer {
-  padding: 10px;
-  border: 1px solid #d4d7dd;
-  background-color: #eae9e9;
-  color: #45454d;
-}
-
 .social-icon {
   width: 24px;
   height: 24px;
@@ -205,28 +199,106 @@ button {
   transform: translateY(-5px);
 }
 
+.pokemon-bio {
+  position: relative;
+  padding-top: 40%;
+}
+
+.pokemon-card {
+padding: 5px;
+}
+
+
 @media (max-width: 860px) {
   .page {
-      width: 65%;
+      width: 100%;
   }
   .menu-bar {
       padding-left: 5%;
       padding-right: 5%;
   }
+  .cards-bar {
+    margin-left: 7%;
+  }
 }
 
 @media (max-width: 770px) {
   .page {
-      width: 80%;
+      width: 70%;
+  }
+  .cards-bar {
+    margin-left: 10%;
   }
 }
 
 @media (max-width: 660px) {
   .page {
-      width: 98%;
+      width: 60%;
   }
   .menu-bar {
       padding-left: 0;
       padding-right: 0;
   }
+  .cards-bar {
+    margin-left: 5%;
+  }
 }
+
+@media (max-width: 360px) {
+  .page {
+      width: 30%;
+  }
+  .menu-bar {
+      padding-left: 0;
+      padding-right: 0;
+  }
+  .cards-bar {
+    margin-left: 0%;
+  }
+}
+
+
+p {
+  margin: 0;
+}
+
+.Card {
+  background: white;
+  border-radius: 10px;
+}
+
+.Card__img {
+  text-align: center;
+}
+
+.Card__types {
+  display: flex;
+  justify-content: center;    
+}
+
+.Card__type {
+  padding: 5px 10px;
+  margin: 10px 10px 10px 0;
+  border-radius: 5px;
+  background: cyan;
+  color: #fff;
+}
+
+.Card__name {
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: 800;
+}
+
+.Card__info {
+  margin-left: 10px;
+}
+
+.Card__data {
+  padding-bottom: 10px;
+}
+
+.Card__data .title {
+  font-weight: 700;
+}
+
