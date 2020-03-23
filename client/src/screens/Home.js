@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { getAllPokemons, getPokemon } from '../functions/getPocemons'
 import PocemonCard from '../components/PocemonCard'
+import SearchBar from '../components/SearchBar'
+import Selector from '../components/Selector'
+import PocemonProvider from '../context/PocemonContext'
+import SearchContext from '../context/SearchContext'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button'
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,12 +27,21 @@ const Home = () => {
 
     const classes = useStyles();
 
+    const [numCards, setNumCards] = useContext(PocemonProvider.context);
+
+    const [searchValue, setSearchValue] = useContext(SearchContext.context);
+
     const [pokemonData, setPokemonData] = useState([])
+
 
     const [nextUrl, setNextUrl] = useState('');
     const [prevUrl, setPrevUrl] = useState('');
     const [loading, setLoading] = useState(true);
-    const initialURL = 'https://pokeapi.co/api/v2/pokemon'
+
+    const [count, setCount] = useState(0)
+
+    const initialURL = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${numCards}`
+
 
     useEffect(() => {
         async function fetchData() {
@@ -39,12 +52,15 @@ const Home = () => {
             setLoading(false);
         }
         fetchData();
-    }, [])
+    }, [numCards, searchValue])
+
+
 
     const next = async () => {
         setLoading(true);
         let data = await getAllPokemons(nextUrl);
         await loadPokemon(data.results);
+        setCount(prev => prev + 20)
         setNextUrl(data.next);
         setPrevUrl(data.previous);
         setLoading(false);
@@ -55,25 +71,44 @@ const Home = () => {
         setLoading(true);
         let data = await getAllPokemons(prevUrl);
         await loadPokemon(data.results);
+        setCount(prev => prev - 20)
         setNextUrl(data.next);
         setPrevUrl(data.previous);
         setLoading(false);
     }
 
     const loadPokemon = async (data) => {
+
+
         let _pokemonData = await Promise.all(data.map(async pokemon => {
             let pokemonRecord = await getPokemon(pokemon)
             return pokemonRecord
         }))
         setPokemonData(_pokemonData);
+
     }
 
+
+    const addFavirite = (e) => {
+        // console.log(e)
+    }
+
+
+    console.log(searchValue)
     return (
         <>
             {loading ? <h1 style={{ textAlign: 'center' }}>Loading...</h1>
                 :
                 (
                     <div style={{ textAlign: 'center' }}>
+
+                        <div className="search-bar">
+                            <SearchBar />
+                        </div>
+
+                        <div className="selector">
+                            <Selector />
+                        </div>
 
                         <div className="btn">
                             <Button variant="contained" onClick={prev}>Prev</Button>
@@ -87,9 +122,9 @@ const Home = () => {
 
                                 {pokemonData.map(p => (
 
-                                    <Grid item xs={6}>
+                                    <Grid key={p.name} item xs={6}>
 
-                                        <PocemonCard pokemon={p} />
+                                        <PocemonCard addFavirite={addFavirite} key={p.name} pokemon={p} />
 
                                     </Grid>
                                 ))}
