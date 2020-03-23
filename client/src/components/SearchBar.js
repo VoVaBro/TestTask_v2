@@ -10,9 +10,10 @@ import SearchContext from '../context/SearchContext'
 const useStyles = makeStyles(theme => ({
 
     root: {
-        marginLeft: 0,
+       
         display: 'center',
         alignItems: 'center',
+        justify: 'center',
         width: 300,
     },
     input: {

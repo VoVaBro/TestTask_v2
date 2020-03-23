@@ -110,11 +110,18 @@ const Home = () => {
                             <Selector />
                         </div>
 
-                        <div className="btn">
-                            <Button variant="contained" onClick={prev}>Prev</Button>
-                            <Button variant="contained" onClick={next}>Next</Button>
-                        </div>
+                        {
+                            prevUrl === null ?
+                                <div className="btn">
+                                    <Button variant="contained" onClick={next}>Next</Button>
+                                </div>
+                                :
+                                <div className="btn">
+                                    <Button variant="contained" onClick={prev}>Prev</Button>
+                                    <Button variant="contained" onClick={next}>Next</Button>
+                                </div>
 
+                        }
 
                         <div className={classes.root}>
 
@@ -130,14 +137,7 @@ const Home = () => {
                                 ))}
 
                             </Grid>
-
                         </div>
-
-                        <div className="btn">
-                            <Button variant="contained" onClick={prev}>Prev</Button>
-                            <Button variant="contained" onClick={next}>Next</Button>
-                        </div>
-
                     </div>
                 )}
         </>

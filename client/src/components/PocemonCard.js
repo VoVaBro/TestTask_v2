@@ -15,7 +15,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-
+import typeColors from '../helpers/typeColors'
 
 const useStyles = makeStyles(theme => ({
 
@@ -47,14 +47,22 @@ const PocemonCard = ({ pokemon, addFavirite }) => {
     const NAME = pokemon.name.charAt(0).toUpperCase() + pokemon.name.substring(1, pokemon.name.length)
     const ABILITIES = pokemon.abilities[0].ability.name.charAt(0).toUpperCase() + pokemon.abilities[0].ability.name.substring(1, pokemon.abilities[0].ability.name.length)
 
+    const typeColor = pokemon.types[0].type.name
+    
+    console.log(typeColor)
+
     return (
         <Card className='pokemon-card'>
 
-            <p style={{ fontWeight: 800 }}>{NAME}</p>
-            <p> Type: {pokemon.types[0].type.name} </p>
-            <img src={pokemon.sprites.front_default} alt="" />
-            <p>Height: {pokemon.height}</p>
-            <p>Weight: {pokemon.weight}</p>
+            <div style={{background: typeColors[typeColor]}}>
+
+                <p style={{ fontWeight: 800 }}>{NAME}</p>
+                <p> Type: {pokemon.types[0].type.name} </p>
+                <img src={pokemon.sprites.front_default} alt="" />
+                <p>Height: {pokemon.height}</p>
+                <p>Weight: {pokemon.weight}</p>
+            </div>
+
 
             <CardActions >
 
@@ -79,9 +87,9 @@ const PocemonCard = ({ pokemon, addFavirite }) => {
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography style={{ fontWeight: 800}} paragraph>Abilities:</Typography>
+                    <Typography style={{ fontWeight: 800 }} paragraph>Abilities:</Typography>
                     <p >{ABILITIES}</p>
-                    <Typography style={{ fontWeight: 800,  paddingTop: 5 }} paragraph>Base Experience: </Typography>
+                    <Typography style={{ fontWeight: 800, paddingTop: 5 }} paragraph>Base Experience: </Typography>
                     <Typography paragraph>
                         <p >{pokemon.base_experience}</p>
                     </Typography>
