@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
-        display: 'none',
+        display: 'block',
         [theme.breakpoints.up('sm')]: {
             display: 'block',
         },
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     searchIcon: {
-        padding: theme.spacing(0, 2),
+        padding: theme.spacing(0, 1),
         height: '100%',
         position: 'absolute',
         pointerEvents: 'none',
@@ -57,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        paddingLeft: `calc(1em + ${theme.spacing(6)}px)`,
+        paddingRightt: `calc(1em + ${theme.spacing(6)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('sm')]: {
@@ -72,19 +73,6 @@ const useStyles = makeStyles((theme) => ({
 const MenuBar = ({ pokemonData, loading, prev, next }) => {
 
     const classes = useStyles();
-
-
-    
-
-    const [searchValue, setSearchValue] = useContext(SearchContext.context);
-
-
-    
-
-
-    const addFavirite = (e) => {
-        // console.log(e)
-    }
 
 
     return (
@@ -105,31 +93,6 @@ const MenuBar = ({ pokemonData, loading, prev, next }) => {
                     <IconButton onClick={() => next()}>
                         <ArrowForwardIcon />
                     </IconButton>
-
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <Selector />
-                    </IconButton>
-
-
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
-
                     <IconButton>
                     <DropDownMenu/>
                     </IconButton>

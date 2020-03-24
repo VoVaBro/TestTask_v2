@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import MenuItem from '@material-ui/core/MenuItem';
@@ -6,7 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputBase from '@material-ui/core/InputBase';
 
-import PocemonProvider from '../context/PocemonContext'
+import PocemonProvider from '../context/SelectContext'
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -20,7 +20,7 @@ const BootstrapInput = withStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     border: '1px solid #ced4da',
     fontSize: 9,
-    padding: '6px 16px 6px 8px',
+    padding: '6px 10px 6px 8px',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
 
     fontFamily: [
@@ -49,7 +49,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function CustomizedSelects() {
+ const Selector = () => {
+
 
   const classes = useStyles();
 
@@ -58,7 +59,6 @@ export default function CustomizedSelects() {
   const handleChange = event => {
     setNumCards(event.target.value);
   };
-
 
   return (
     <div>
@@ -78,3 +78,4 @@ export default function CustomizedSelects() {
     </div>
   );
 }
+export default  Selector

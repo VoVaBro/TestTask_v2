@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react'
 import {getAllPokemons, getPokemon} from '../functions/getPocemons'
 
+
 export const useFetch = () => {
-
-
 
     const [pokemonData, setPokemonData] = useState([])
     const [nextUrl, setNextUrl] = useState('');
@@ -11,12 +10,11 @@ export const useFetch = () => {
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(0)
 
-    const initialURL = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${10}`
-
+    const url = `https://pokeapi.co/api/v2/pokemon?offset=${10}&limit=${10}`  
 
     useEffect(() => {
         async function fetchData() {
-            let response = await getAllPokemons(initialURL)
+            let response = await getAllPokemons(url)
             setNextUrl(response.next);
             setPrevUrl(response.previous);
             await loadPokemon(response.results);
@@ -27,7 +25,7 @@ export const useFetch = () => {
 
 
 
-    const next = useCallback (async () => {
+    const next =  async () => {
         setLoading(true);
         let data = await getAllPokemons(nextUrl);
         await loadPokemon(data.results);
@@ -35,9 +33,9 @@ export const useFetch = () => {
         setNextUrl(data.next);
         setPrevUrl(data.previous);
         setLoading(false);
-    },[])
+    }
 
-    const prev = useCallback( async () => {
+    const prev =  async () => {
         if (!prevUrl) return;
         setLoading(true);
         let data = await getAllPokemons(prevUrl);
@@ -46,16 +44,15 @@ export const useFetch = () => {
         setNextUrl(data.next);
         setPrevUrl(data.previous);
         setLoading(false);
-    },)
+    }
 
-    const loadPokemon = useCallback( async (data) => {
+    const loadPokemon =  async (data) => {
         let _pokemonData = await Promise.all(data.map(async pokemon => {
             let pokemonRecord = await getPokemon(pokemon)
             return pokemonRecord
         }))
         setPokemonData(_pokemonData);
-    },[])
+    }
 
     return {pokemonData,loading, next, prev}
-
 }
