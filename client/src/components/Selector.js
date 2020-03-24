@@ -11,16 +11,16 @@ import PocemonProvider from '../context/PocemonContext'
 const BootstrapInput = withStyles(theme => ({
   root: {
     'label + &': {
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(1),
     },
   },
   input: {
-    borderRadius: 4,
+    borderRadius: 10,
     position: 'relative',
     backgroundColor: theme.palette.background.paper,
     border: '1px solid #ced4da',
-    fontSize: 10,
-    padding: '10px 26px 10px 12px',
+    fontSize: 9,
+    padding: '6px 16px 6px 8px',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
 
     fontFamily: [

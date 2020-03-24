@@ -46,7 +46,6 @@ const PocemonCard = ({ pokemon, addFavirite }) => {
 
     const NAME = pokemon.name.charAt(0).toUpperCase() + pokemon.name.substring(1, pokemon.name.length)
     const ABILITIES = pokemon.abilities[0].ability.name.charAt(0).toUpperCase() + pokemon.abilities[0].ability.name.substring(1, pokemon.abilities[0].ability.name.length)
-
     const typeColor = pokemon.types[0].type.name
     
     console.log(typeColor)
