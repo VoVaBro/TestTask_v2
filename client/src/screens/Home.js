@@ -1,22 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PocemonCard from '../components/PocemonCard'
-import IconButton from '@material-ui/core/IconButton';
-import Selector from '../components/Selector'
-import SearchContext from '../context/SearchContext'
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles } from '@material-ui/core/styles';
 
-import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import MenuIcon from '@material-ui/icons/Menu';
-import DirectionsIcon from '@material-ui/icons/Directions';
-
+import { makeStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
 
-import { useFetch } from '../hooks/useFetch'
-
+import { PokemonContext } from '../context/PokemonContext'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -25,7 +14,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Home = ({ pokemonData, loading }) => {
+const Home = () => {
+
+    const { pokemonData, loading } = useContext(PokemonContext)
 
     const classes = useStyles();
 
@@ -35,7 +26,7 @@ const Home = ({ pokemonData, loading }) => {
                 :
                 (
                     <div>
-                       
+
                         <div style={{ textAlign: 'center' }}>
 
                             <div className={classes.root}>
@@ -44,7 +35,7 @@ const Home = ({ pokemonData, loading }) => {
 
                                     {pokemonData.map(p => (
 
-                                        <Grid key={p.name} item xs={3}>
+                                        <Grid key={p.name} item xs={2}>
 
                                             <PocemonCard addFavirite={''} key={p.name} pokemon={p} />
 

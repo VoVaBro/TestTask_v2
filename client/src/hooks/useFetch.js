@@ -1,19 +1,29 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react'
-import {getAllPokemons, getPokemon} from '../functions/getPocemons'
+import { getAllPokemons, getPokemon } from '../functions/getPocemons'
+
+import { PokemonContext } from '../context/PokemonContext'
+
 
 
 export const useFetch = () => {
+
+    const pokemon = useContext(PokemonContext)
 
     const [pokemonData, setPokemonData] = useState([])
     const [nextUrl, setNextUrl] = useState('');
     const [prevUrl, setPrevUrl] = useState('');
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(0)
+    const [viewNum, setViewNum] = useState(10)
+    const [pokemonType, setPokemonType] = useState('All')
 
-    const url = `https://pokeapi.co/api/v2/pokemon?offset=${10}&limit=${10}`  
+
 
     useEffect(() => {
         async function fetchData() {
+
+            let url = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${viewNum}`
+
             let response = await getAllPokemons(url)
             setNextUrl(response.next);
             setPrevUrl(response.previous);
@@ -21,11 +31,10 @@ export const useFetch = () => {
             setLoading(false);
         }
         fetchData();
-    }, [])
+    }, [viewNum, pokemonType])
 
 
-
-    const next =  async () => {
+    const next = async () => {
         setLoading(true);
         let data = await getAllPokemons(nextUrl);
         await loadPokemon(data.results);
@@ -35,7 +44,7 @@ export const useFetch = () => {
         setLoading(false);
     }
 
-    const prev =  async () => {
+    const prev = async () => {
         if (!prevUrl) return;
         setLoading(true);
         let data = await getAllPokemons(prevUrl);
@@ -46,13 +55,29 @@ export const useFetch = () => {
         setLoading(false);
     }
 
-    const loadPokemon =  async (data) => {
+    const switchViews = (num) => {
+        setViewNum(num)
+    }
+
+    const switchType = (type) => {
+        setPokemonType(type)
+    }
+
+
+    const search = !!pokemonType
+
+    const loadPokemon = async (data) => {
         let _pokemonData = await Promise.all(data.map(async pokemon => {
             let pokemonRecord = await getPokemon(pokemon)
             return pokemonRecord
         }))
-        setPokemonData(_pokemonData);
+        if (search && (pokemonType !== 'All')) {
+           let searchValue = _pokemonData.filter(p => p.types[0].type.name === pokemonType)
+           setPokemonData(searchValue);
+        } else {
+            setPokemonData(_pokemonData);
+        }
     }
 
-    return {pokemonData,loading, next, prev}
+    return { pokemonData, loading, next, prev, switchViews, switchType }
 }

@@ -56,7 +56,7 @@ const DropDownMenu = () => {
         <div style={{ float: "right" }}>
             <IconButton
                 href=""
-                style={{ color: "red", padding: "13px 12px" }}
+                style={{ color: "yellow", padding: "13px 12px" }}
                 onClick={handleClick}
             >
                 <MoreVertIcon />
@@ -80,7 +80,6 @@ const DropDownMenu = () => {
                     </ListItemIcon>
                     <ListItemText primary="Profile" />
                 </StyledMenuItem>
-                
             </StyledMenu>
         </div>
     );

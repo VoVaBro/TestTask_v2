@@ -1,12 +1,19 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputBase from '@material-ui/core/InputBase';
+import { PokemonContext } from '../context/PokemonContext'
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
-import PocemonProvider from '../context/SelectContext'
+
+
+import pokemonTypes from '../helpers/pokemonTypes'
+
+
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -49,20 +56,33 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
- const Selector = () => {
 
+const Selector = () => {
+
+  const pokemon = useContext(PokemonContext)
 
   const classes = useStyles();
 
-  const [numCards, setNumCards] = useContext(PocemonProvider.context);
+  const [numCards, setNumCards] = useState(10);
+  const [pokemonType, setpokemonType] = useState("All");
+
 
   const handleChange = event => {
-    setNumCards(event.target.value);
+    setNumCards(event.target.value)
+    pokemon.switchViews(event.target.value)
   };
+
+  const handleSearch = event => {
+    setpokemonType(event.target.value)
+    pokemon.switchType(event.target.value)
+  };
+
+  
 
   return (
     <div>
       <FormControl className={classes.margin}>
+      
         <Select
           labelId="demo-customized-select-label"
           id="demo-customized-select"
@@ -70,12 +90,27 @@ const useStyles = makeStyles(theme => ({
           onChange={handleChange}
           input={<BootstrapInput />}
         >
+          <InputLabel id="demo-simple-select-label">Show</InputLabel>
           <MenuItem value={10}>10</MenuItem>
           <MenuItem value={20}>20</MenuItem>
           <MenuItem value={50}>50</MenuItem>
+        </Select>
+        <FormHelperText>Chose type:</FormHelperText>
+        <Select
+          labelId="demo-customized-select-label"
+          id="demo-customized-select"
+          value={pokemonType}
+          onChange={handleSearch}
+          input={<BootstrapInput />}
+        >
+          {
+            pokemonTypes.map(t => (
+            <MenuItem value={t}>{t}</MenuItem>
+            ))
+          }
         </Select>
       </FormControl>
     </div>
   );
 }
-export default  Selector
+export default Selector
