@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const PocemonCard = ({ pokemon, addFavirite }) => {
+const PocemonCard = ({ pokemon, addFavorite }) => {
 
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -48,9 +48,8 @@ const PocemonCard = ({ pokemon, addFavirite }) => {
     const ABILITIES = pokemon.abilities[0].ability.name.charAt(0).toUpperCase() + pokemon.abilities[0].ability.name.substring(1, pokemon.abilities[0].ability.name.length)
     const typeColor = pokemon.types[0].type.name
     
-    console.log(typeColor)
-
-    return (
+    
+ return (
         <Card className='pokemon-card'>
 
             <div style={{background: typeColors[typeColor]}}>
@@ -65,7 +64,7 @@ const PocemonCard = ({ pokemon, addFavirite }) => {
 
             <CardActions >
 
-                <IconButton onClick={() => addFavirite(pokemon)} aria-label="add to favorites">
+                <IconButton  aria-label="add to favorites">
                     <FavoriteIcon></FavoriteIcon>
                 </IconButton>
 

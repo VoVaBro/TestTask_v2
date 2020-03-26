@@ -33,6 +33,12 @@ if (outerWidth <= 414){
 
     const classes = useStyles();
 
+
+    const addFavorite = (data) => {
+        console.log(data)
+        }
+           
+
     return (
         <>
             {loading ? <h1 style={{ textAlign: 'center' }}>Loading...</h1>
@@ -50,7 +56,7 @@ if (outerWidth <= 414){
 
                                         <Grid key={p.name} item xs={items}>
 
-                                            <PocemonCard addFavirite={''} key={p.name} pokemon={p} />
+                                            <PocemonCard addFavirite={addFavorite} key={p.name} pokemon={p} />
 
                                         </Grid>
                                     ))}
