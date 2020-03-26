@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { Link } from "react-router-dom";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import DropDownMenu from '../menus/DropDownMenu'
@@ -21,30 +20,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Selector from '../Selector'
 import HomeIcon from "@material-ui/icons/Home";
 
-import {  useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import {PokemonContext} from '../../context/PokemonContext'
+import { PokemonContext } from '../../context/PokemonContext'
 
 
-const StyledMenu = withStyles({
-    paper: {
-        border: "1px solid #d3d4d5"
-    }
-})(props => (
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-      }}
-      transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-      }}
-      {...props}
-    />
-));
 
 const StyledMenuItem = withStyles(theme => ({
     root: {
@@ -99,7 +79,6 @@ const useStyles = makeStyles((theme) => ({
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%',
@@ -124,8 +103,8 @@ const useStyles = makeStyles((theme) => ({
 export default function PrimarySearchAppBar() {
     const history = useHistory()
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -165,7 +144,7 @@ export default function PrimarySearchAppBar() {
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
-        
+
         <Menu
             anchorEl={mobileMoreAnchorEl}
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -177,15 +156,15 @@ export default function PrimarySearchAppBar() {
         >
             <MenuItem>
                 <IconButton aria-label="show 4 new mails" color="inherit">
-                    <Badge  color="secondary">
-                        <Selector /> 
+                    <Badge color="secondary">
+                        <Selector />
                     </Badge>
                 </IconButton>
                 <p>Search</p>
             </MenuItem>
             <MenuItem>
-            
-            <StyledMenuItem onClick={() => history.push("/")}>
+
+                <StyledMenuItem onClick={() => history.push("/")}>
                     <ListItemIcon>
                         <HomeIcon />
                     </ListItemIcon>
@@ -198,7 +177,7 @@ export default function PrimarySearchAppBar() {
                     </ListItemIcon>
                     <ListItemText primary="Profile" />
                 </StyledMenuItem>
-            
+
             </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
@@ -207,21 +186,22 @@ export default function PrimarySearchAppBar() {
                     aria-haspopup="true"
                     color="inherit"
                 >
-                    
+
                     <IconButton onClick={() => prev()}>
                         <ArrowBackIcon />
                     </IconButton>
 
                     <IconButton onClick={() => next()}>
                         <ArrowForwardIcon />
-                        </IconButton>
+                    </IconButton>
                 </IconButton>
-                
+
             </MenuItem>
         </Menu>
     );
 
-    const { prev, next } = useContext(PokemonContext)
+    const { prev, next, findByName } = useContext(PokemonContext)
+
 
     return (
         <div className={classes.grow}>
@@ -231,18 +211,19 @@ export default function PrimarySearchAppBar() {
 
                     <Typography className={classes.title} variant="h6" noWrap>
                         Pokemon Cards
-          </Typography>
+                    </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
-                            <SearchIcon />
+                                <SearchIcon />
                         </div>
                         <InputBase
-                            placeholder="Search…"
+                            placeholder="Search by name…"
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
                             inputProps={{ 'aria-label': 'search' }}
+                            onChange={(e) => findByName(e.target.value)}
                         />
                     </div>
                     <div className={classes.grow} />
@@ -256,12 +237,12 @@ export default function PrimarySearchAppBar() {
                         </IconButton>
 
                         <IconButton aria-label="show 4 new mails" color="inherit">
-                            <Badge  color="secondary">
+                            <Badge color="secondary">
                                 <Selector />
                             </Badge>
                         </IconButton>
                         <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge  color="secondary">
+                            <Badge color="secondary">
                                 <DropDownMenu />
                             </Badge>
                         </IconButton>

@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getAllPokemons, getPokemon } from '../functions/getPocemons'
-
-import { PokemonContext } from '../context/PokemonContext'
-
 
 
 export const useFetch = () => {
-
-    const pokemon = useContext(PokemonContext)
 
     const [pokemonData, setPokemonData] = useState([])
     const [nextUrl, setNextUrl] = useState('');
@@ -16,7 +11,7 @@ export const useFetch = () => {
     const [count, setCount] = useState(0)
     const [viewNum, setViewNum] = useState(10)
     const [pokemonType, setPokemonType] = useState('All')
-
+    const [name, setName] = useState('')
 
 
     useEffect(() => {
@@ -31,7 +26,7 @@ export const useFetch = () => {
             setLoading(false);
         }
         fetchData();
-    }, [viewNum, pokemonType])
+    }, [viewNum, pokemonType, name, count])
 
 
     const next = async () => {
@@ -63,21 +58,66 @@ export const useFetch = () => {
         setPokemonType(type)
     }
 
-
-    const search = !!pokemonType
-
-    const loadPokemon = async (data) => {
-        let _pokemonData = await Promise.all(data.map(async pokemon => {
-            let pokemonRecord = await getPokemon(pokemon)
-            return pokemonRecord
-        }))
-        if (search && (pokemonType !== 'All')) {
-           let searchValue = _pokemonData.filter(p => p.types[0].type.name === pokemonType)
-           setPokemonData(searchValue);
-        } else {
-            setPokemonData(_pokemonData);
-        }
+    const findByName = (name) => {
+        setName(name)
     }
 
-    return { pokemonData, loading, next, prev, switchViews, switchType }
+    const search = !!pokemonType
+    const searchName = !!name
+
+
+
+    const loadPokemon = async (data) => {
+
+
+        if (search && (pokemonType !== 'All')) {
+
+            let _pokemonData = await Promise.all(data.map(async pokemon => {
+                let pokemonRecord = await getPokemon(pokemon)
+                return pokemonRecord
+            }))
+            let searchValue = _pokemonData.filter(p => p.types[0].type.name === pokemonType)
+            setPokemonData(searchValue)
+
+        } else if (searchName) {
+
+            let _pokemonData = await Promise.all(data.map(async pokemon => {
+                let pokemonRecord = await getPokemon(pokemon)
+                return pokemonRecord
+            }))
+            let searchValue = _pokemonData.filter(p => p.name === name)
+            setPokemonData(searchValue)
+
+        } else {
+            let _pokemonData = await Promise.all(data.map(async pokemon => {
+                    let pokemonRecord = await getPokemon(pokemon)
+
+                    console.log('pokemonRecord', pokemonRecord)
+                    return pokemonRecord
+                }))
+                setPokemonData(_pokemonData)
+        }
+
+        // let _pokemonData = await Promise.all(data.map(async pokemon => {
+        //     let pokemonRecord = await getPokemon(pokemon)
+        //     return pokemonRecord
+        // }))
+
+        // if ((search && (pokemonType !== 'All'))){
+        //     searchByType(_pokemonData)
+        // } else {
+        //     setPokemonData(_pokemonData)
+        // }
+
+
+        // if (searchName) {
+        //     searchByName(_pokemonData)
+        // } else {
+        //     setPokemonData(_pokemonData);
+        // }
+
+       
+    }
+
+    return { pokemonData, loading, next, prev, switchViews, switchType, findByName, pokemonType }
 }

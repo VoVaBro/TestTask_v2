@@ -11,10 +11,10 @@ import './App.css';
 
 const App = () => {
 
-  const { pokemonData, loading, prev, next, switchViews, switchType } = useFetch()
+  const { pokemonData, loading, prev, next, switchViews, switchType, findByName } = useFetch()
 
   return (
-      <PokemonContext.Provider value={{ pokemonData, loading, prev, next, switchViews, switchType }}>
+      <PokemonContext.Provider value={{ pokemonData, loading, prev, next, switchViews, switchType, findByName }}>
         <Router>
           <MenuBar />
           <Switch>

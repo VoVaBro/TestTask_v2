@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import PocemonCard from '../components/PocemonCard'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,8 +13,21 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const {outerWidth} = window
 
 const Home = () => {
+
+    
+
+const [items, setItems] = useState(2)
+
+useEffect(() => {
+if (outerWidth <= 414){
+    setItems(5)
+}else {
+    setItems(2)
+}
+}, [outerWidth])
 
     const { pokemonData, loading } = useContext(PokemonContext)
 
@@ -35,7 +48,7 @@ const Home = () => {
 
                                     {pokemonData.map(p => (
 
-                                        <Grid key={p.name} item xs={2}>
+                                        <Grid key={p.name} item xs={items}>
 
                                             <PocemonCard addFavirite={''} key={p.name} pokemon={p} />
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import MenuItem from '@material-ui/core/MenuItem';
@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 
 const Selector = () => {
 
-  const pokemon = useContext(PokemonContext)
+  const {switchViews, switchType} = useContext(PokemonContext)
 
   const classes = useStyles();
 
@@ -69,12 +69,12 @@ const Selector = () => {
 
   const handleChange = event => {
     setNumCards(event.target.value)
-    pokemon.switchViews(event.target.value)
+    switchViews(event.target.value)
   };
 
   const handleSearch = event => {
     setpokemonType(event.target.value)
-    pokemon.switchType(event.target.value)
+   switchType(event.target.value)
   };
 
   
