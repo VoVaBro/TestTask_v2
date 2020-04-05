@@ -12,21 +12,62 @@ export const useFetch = () => {
     const [viewNum, setViewNum] = useState(10)
     const [pokemonType, setPokemonType] = useState('All')
     const [name, setName] = useState('')
+    const [reload, setRelaod] = useState(false)
+
+
+
+    async function fetchData() {
+
+        let url = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${viewNum}`
+
+        let response = await getAllPokemons(url)
+        setNextUrl(response.next);
+        setPrevUrl(response.previous);
+        await loadPokemon(response.results);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchData()
+    },[viewNum, pokemonType,  count])
 
 
     useEffect(() => {
-        async function fetchData() {
 
-            let url = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${viewNum}`
+        const handleSearch = (text) => {
 
-            let response = await getAllPokemons(url)
-            setNextUrl(response.next);
-            setPrevUrl(response.previous);
-            await loadPokemon(response.results);
-            setLoading(false);
+            if (text == '') {
+                fetchData()
+                setRelaod(false)
+            } else {
+
+                const newData = pokemonData.filter(item => {
+                    const itemData = `${item.name.toUpperCase()}`
+
+                    const textData = text.toUpperCase();
+
+                    return itemData.indexOf(textData) > -1
+                });
+                setRelaod(true)
+                setPokemonData(newData)
+            }
         }
-        fetchData();
-    }, [viewNum, pokemonType, name, count])
+        handleSearch(name)
+    }, [name.length])
+
+    // useEffect(() => {
+    //     async function fetchData() {
+
+    //         let url = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${viewNum}`
+
+    //         let response = await getAllPokemons(url)
+    //         setNextUrl(response.next);
+    //         setPrevUrl(response.previous);
+    //         await loadPokemon(response.results);
+    //         setLoading(false);
+    //     }
+    //     fetchData();
+    // }, [viewNum, pokemonType, name, count])
 
 
     const next = async () => {
@@ -67,6 +108,7 @@ export const useFetch = () => {
 
 
 
+
     const loadPokemon = async (data) => {
 
 
@@ -79,23 +121,23 @@ export const useFetch = () => {
             let searchValue = _pokemonData.filter(p => p.types[0].type.name === pokemonType)
             setPokemonData(searchValue)
 
-        } else if (searchName) {
+            // } else if (searchName) {
 
-            let _pokemonData = await Promise.all(data.map(async pokemon => {
-                let pokemonRecord = await getPokemon(pokemon)
-                return pokemonRecord
-            }))
-            let searchValue = _pokemonData.filter(p => p.name === name)
-            setPokemonData(searchValue)
+            //     let _pokemonData = await Promise.all(data.map(async pokemon => {
+            //         let pokemonRecord = await getPokemon(pokemon)
+            //         return pokemonRecord
+            //     }))
+            //     let searchValue = _pokemonData.filter(p => p.name === name)
+            //     setPokemonData(searchValue)
 
         } else {
             let _pokemonData = await Promise.all(data.map(async pokemon => {
-                    let pokemonRecord = await getPokemon(pokemon)
+                let pokemonRecord = await getPokemon(pokemon)
 
-                    console.log('pokemonRecord', pokemonRecord)
-                    return pokemonRecord
-                }))
-                setPokemonData(_pokemonData)
+                console.log('pokemonRecord', pokemonRecord)
+                return pokemonRecord
+            }))
+            setPokemonData(_pokemonData)
         }
 
         // let _pokemonData = await Promise.all(data.map(async pokemon => {
@@ -116,7 +158,7 @@ export const useFetch = () => {
         //     setPokemonData(_pokemonData);
         // }
 
-       
+
     }
 
     return { pokemonData, loading, next, prev, switchViews, switchType, findByName, pokemonType }

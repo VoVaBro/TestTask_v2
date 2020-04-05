@@ -13,21 +13,21 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const {outerWidth} = window
+const { outerWidth } = window
 
 const Home = () => {
 
-    
+    let gridValue;
 
-const [items, setItems] = useState(2)
+    useEffect(() => {
+        if (outerWidth <= 414) {
+            gridValue = 5
+        } else {
+            gridValue = 2
+        }
+    }, [outerWidth])
 
-useEffect(() => {
-if (outerWidth <= 414){
-    setItems(5)
-}else {
-    setItems(2)
-}
-}, [outerWidth])
+
 
     const { pokemonData, loading } = useContext(PokemonContext)
 
@@ -36,8 +36,8 @@ if (outerWidth <= 414){
 
     const addFavorite = (data) => {
         console.log(data)
-        }
-           
+    }
+
 
     return (
         <>
@@ -54,7 +54,7 @@ if (outerWidth <= 414){
 
                                     {pokemonData.map(p => (
 
-                                        <Grid key={p.name} item xs={items}>
+                                        <Grid key={p.name} item xs={gridValue}>
 
                                             <PocemonCard addFavirite={addFavorite} key={p.name} pokemon={p} />
 
