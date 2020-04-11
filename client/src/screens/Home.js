@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import PocemonCard from '../components/PocemonCard'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,7 +23,7 @@ const Home = () => {
         if (outerWidth <= 414) {
             gridValue = 5
         } else {
-            gridValue = 2
+            gridValue = 1
         }
     }, [outerWidth])
 
@@ -50,7 +50,7 @@ const Home = () => {
 
                             <div className={classes.root}>
 
-                                <Grid container spacing={1}>
+                                <Grid container spacing={2}>
 
                                     {pokemonData.map(p => (
 

@@ -29,14 +29,14 @@ export const useFetch = () => {
 
     useEffect(() => {
         fetchData()
-    },[viewNum, pokemonType,  count])
+    },[viewNum, pokemonType,  count, reload])
 
 
     useEffect(() => {
 
         const handleSearch = (text) => {
 
-            if (text == '') {
+            if (text === '') {
                 fetchData()
                 setRelaod(false)
             } else {
@@ -53,7 +53,7 @@ export const useFetch = () => {
             }
         }
         handleSearch(name)
-    }, [name.length])
+    }, [name.length, name])
 
     // useEffect(() => {
     //     async function fetchData() {
@@ -104,9 +104,7 @@ export const useFetch = () => {
     }
 
     const search = !!pokemonType
-    const searchName = !!name
-
-
+    
 
 
     const loadPokemon = async (data) => {
@@ -135,7 +133,7 @@ export const useFetch = () => {
                 let pokemonRecord = await getPokemon(pokemon)
 
                 console.log('pokemonRecord', pokemonRecord)
-                return pokemonRecord
+                return  pokemonRecord
             }))
             setPokemonData(_pokemonData)
         }

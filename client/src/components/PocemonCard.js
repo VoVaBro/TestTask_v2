@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
     media: {
         height: 0,
-        paddingTop: '56.25%', // 16:9
+        paddingTop: '56.25%', 
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -83,7 +83,7 @@ const PocemonCard = ({ pokemon, addFavorite }) => {
 
             </CardActions>
 
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Collapse in={expanded} timeout="auto" >
                 <CardContent>
                     <Typography style={{ fontWeight: 800 }} paragraph>Abilities:</Typography>
                     <p >{ABILITIES}</p>
