@@ -1,7 +1,8 @@
 To run frontend:
-cd server \n
+cd server
+
 npm run client
 
 To run server:
-cd server \n
+cd server
 npm run server
