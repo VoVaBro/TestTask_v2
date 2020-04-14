@@ -1,24 +1,24 @@
 import React, { useState, useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import DropDownMenu from '../menus/DropDownMenu'
+// import DropDownMenu from '../menus/DropDownMenu'
 import { fade, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+// import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { withStyles } from "@material-ui/core/styles";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+// import ListItemIcon from "@material-ui/core/ListItemIcon";
+// import ListItemText from "@material-ui/core/ListItemText";
 import Selector from '../Selector'
-import HomeIcon from "@material-ui/icons/Home";
+// import HomeIcon from "@material-ui/icons/Home";
 
 import { useHistory } from 'react-router-dom'
 
@@ -155,47 +155,37 @@ export default function PrimarySearchAppBar() {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton aria-label="show 4 new mails" color="inherit">
+                <Button aria-label="show 4 new mails" color="inherit">
                     <Badge color="secondary">
                         <Selector />
                     </Badge>
-                </IconButton>
-                <p>Search</p>
+                </Button>
             </MenuItem>
             <MenuItem>
 
-                <StyledMenuItem onClick={() => history.push("/")}>
+                {/* <StyledMenuItem onClick={() => history.push("/")}>
                     <ListItemIcon>
                         <HomeIcon />
                     </ListItemIcon>
                     <ListItemText primary="Home" />
-                </StyledMenuItem>
+                </StyledMenuItem> */}
 
-                <StyledMenuItem onClick={() => history.push("/profile")}>
+                {/* <StyledMenuItem onClick={() => history.push("/profile")}>
                     <ListItemIcon>
                         <AccountCircle />
                     </ListItemIcon>
                     <ListItemText primary="Profile" />
-                </StyledMenuItem>
+                </StyledMenuItem> */}
 
             </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-
-                    <IconButton onClick={() => prev()}>
+            <MenuItem onClick={handleProfileMenuOpen}>     
+                    <Button onClick={() => prev()}>
                         <ArrowBackIcon />
-                    </IconButton>
+                    </Button>
 
-                    <IconButton onClick={() => next()}>
+                    <Button onClick={() => next()}>
                         <ArrowForwardIcon />
-                    </IconButton>
-                </IconButton>
-
+                    </Button>
             </MenuItem>
         </Menu>
     );
@@ -206,10 +196,8 @@ export default function PrimarySearchAppBar() {
     return (
         <div className={classes.grow}>
             <AppBar position="static">
-                <Toolbar>
-
-
-                    <Typography className={classes.title} variant="h6" noWrap>
+                <Toolbar style={{color: 'yellow'}}>
+                    <Typography className={classes.title} variant="h6" >
                         Pokemon Cards
                     </Typography>
                     <div className={classes.search}>
@@ -229,26 +217,29 @@ export default function PrimarySearchAppBar() {
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
 
-                        <IconButton onClick={() => prev()}>
+                        <Button  onClick={() => prev()}>
                             <ArrowBackIcon />
-                        </IconButton>
-                        <IconButton onClick={() => next()}>
-                            <ArrowForwardIcon />
-                        </IconButton>
+                        </Button>
 
-                        <IconButton aria-label="show 4 new mails" color="inherit">
+                        <Button onClick={() => next()}>
+                            <ArrowForwardIcon />
+                        </Button>
+
+                        <Button aria-label="show 4 new mails" color="inherit">
                             <Badge color="secondary">
                                 <Selector />
                             </Badge>
-                        </IconButton>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
+                        </Button>
+
+                        {/* <IconButton aria-label="show 17 new notifications" color="inherit">
                             <Badge color="secondary">
                                 <DropDownMenu />
                             </Badge>
-                        </IconButton>
+                        </IconButton> */}
+                        
                     </div>
                     <div className={classes.sectionMobile}>
-                        <IconButton
+                        <Button
                             aria-label="show more"
                             aria-controls={mobileMenuId}
                             aria-haspopup="true"
@@ -256,7 +247,7 @@ export default function PrimarySearchAppBar() {
                             color="inherit"
                         >
                             <MoreIcon />
-                        </IconButton>
+                        </Button>
                     </div>
                 </Toolbar>
             </AppBar>
