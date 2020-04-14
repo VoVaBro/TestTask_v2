@@ -1,163 +1,156 @@
-import React, { useState, useEffect } from 'react'
-import { getAllPokemons, getPokemon } from '../functions/getPocemons'
-
+import React, { useState, useEffect } from "react";
+import {
+  getAllPokemons,
+  getPokemon,
+  getAllSearchPokemons,
+  getSearchPokemon
+} from "../functions/getPocemons";
 
 export const useFetch = () => {
+  const [pokemonData, setPokemonData] = useState([]);
+  const [pokemonAllData, setPokemonAllData] = useState([]);
+  const [nextUrl, setNextUrl] = useState("");
+  const [prevUrl, setPrevUrl] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(0);
+  const [viewNum, setViewNum] = useState(10);
+  const [pokemonType, setPokemonType] = useState("All");
+  const [name, setName] = useState("");
+  const [reload, setRelaod] = useState(false);
 
-    const [pokemonData, setPokemonData] = useState([])
-    const [nextUrl, setNextUrl] = useState('');
-    const [prevUrl, setPrevUrl] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [count, setCount] = useState(0)
-    const [viewNum, setViewNum] = useState(10)
-    const [pokemonType, setPokemonType] = useState('All')
-    const [name, setName] = useState('')
-    const [reload, setRelaod] = useState(false)
+  let SEARCH_URL = `https://pokeapi.co/api/v2/pokemon?limit=964`;
+  let URL = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${viewNum}`;
 
+  async function fetchPokemons(url) {
+    let response = await getAllPokemons(url);
+    setNextUrl(response.next);
+    setPrevUrl(response.previous);
+    await loadPokemon(response.results);
+    setLoading(false);
+  }
 
+  async function fetchAllPokemons(url) {
+    let response = await getAllSearchPokemons(url);
+    await loadAllPokemons(response.results);
+    setLoading(false);
+  }
 
-    async function fetchData() {
+  useEffect(() => {
+    fetchPokemons(URL);
+  }, [viewNum, count, reload]);
 
-        let url = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${viewNum}`
+  useEffect(() => {
+    fetchAllPokemons(SEARCH_URL);
+  }, []);
 
-        let response = await getAllPokemons(url)
-        setNextUrl(response.next);
-        setPrevUrl(response.previous);
-        await loadPokemon(response.results);
-        setLoading(false);
+  useEffect(() => {
+
+    const search = !!pokemonType;
+
+    if (search && (pokemonType !== "All")) {
+
+      const typeSearch = async () => {
+        
+        let searchValue = pokemonAllData.filter(
+          p => p.types[0].type.name === pokemonType
+        );
+        setPokemonData(searchValue);
+      };
+
+      typeSearch();
+    } else {
+      fetchPokemons(URL);
     }
-
-    useEffect(() => {
-        fetchData()
-    },[viewNum, pokemonType,  count, reload])
+  }, [pokemonType]);
 
 
-    useEffect(() => {
-
-        const handleSearch = (text) => {
-
-            if (text === '') {
-                fetchData()
-                setRelaod(false)
-            } else {
-
-                const newData = pokemonData.filter(item => {
-                    const itemData = `${item.name.toUpperCase()}`
-
-                    const textData = text.toUpperCase();
-
-                    return itemData.indexOf(textData) > -1
-                });
-                setRelaod(true)
-                setPokemonData(newData)
-            }
-        }
-        handleSearch(name)
-    }, [name.length, name])
-
-    // useEffect(() => {
-    //     async function fetchData() {
-
-    //         let url = `https://pokeapi.co/api/v2/pokemon?offset=${count}&limit=${viewNum}`
-
-    //         let response = await getAllPokemons(url)
-    //         setNextUrl(response.next);
-    //         setPrevUrl(response.previous);
-    //         await loadPokemon(response.results);
-    //         setLoading(false);
-    //     }
-    //     fetchData();
-    // }, [viewNum, pokemonType, name, count])
 
 
-    const next = async () => {
-        setLoading(true);
-        let data = await getAllPokemons(nextUrl);
-        await loadPokemon(data.results);
-        setCount(prev => prev + 20)
-        setNextUrl(data.next);
-        setPrevUrl(data.previous);
-        setLoading(false);
-    }
+  useEffect(() => {
+    const handleSearch = text => {
+      if (text !== "" || text.length > 0) {
+        const newData = pokemonAllData.filter(item => {
+          const itemData = `${item.name.toUpperCase()}`;
 
-    const prev = async () => {
-        if (!prevUrl) return;
-        setLoading(true);
-        let data = await getAllPokemons(prevUrl);
-        await loadPokemon(data.results);
-        setCount(prev => prev - 20)
-        setNextUrl(data.next);
-        setPrevUrl(data.previous);
-        setLoading(false);
-    }
+          const textData = text.toUpperCase();
 
-    const switchViews = (num) => {
-        setViewNum(num)
-    }
-
-    const switchType = (type) => {
-        setPokemonType(type)
-    }
-
-    const findByName = (name) => {
-        setName(name)
-    }
-
-    const search = !!pokemonType
-    
+          return itemData.indexOf(textData) > -1;
+        });
+        setPokemonData(newData);
+      } else {
+        setRelaod(!reload);
+      }
+    };
+    handleSearch(name);
+  }, [name]);
 
 
-    const loadPokemon = async (data) => {
 
+  const next = async () => {
+    setLoading(true);
+    let data = await getAllPokemons(nextUrl);
+    await loadPokemon(data.results);
+    setCount(viewNum);
+    setNextUrl(data.next);
+    setPrevUrl(data.previous);
+    setLoading(false);
+  };
 
-        if (search && (pokemonType !== 'All')) {
+  const prev = async () => {
+    if (!prevUrl) return;
+    setLoading(true);
+    let data = await getAllPokemons(prevUrl);
+    await loadPokemon(data.results);
+    setCount(viewNum);
+    setNextUrl(data.next);
+    setPrevUrl(data.previous);
+    setLoading(false);
+  };
 
-            let _pokemonData = await Promise.all(data.map(async pokemon => {
-                let pokemonRecord = await getPokemon(pokemon)
-                return pokemonRecord
-            }))
-            let searchValue = _pokemonData.filter(p => p.types[0].type.name === pokemonType)
-            setPokemonData(searchValue)
+  const switchViews = num => {
+    setViewNum(num);
+  };
 
-            // } else if (searchName) {
+  const switchType = type => {
+    setPokemonType(type);
+  };
 
-            //     let _pokemonData = await Promise.all(data.map(async pokemon => {
-            //         let pokemonRecord = await getPokemon(pokemon)
-            //         return pokemonRecord
-            //     }))
-            //     let searchValue = _pokemonData.filter(p => p.name === name)
-            //     setPokemonData(searchValue)
+  const findByName = name => {
+    setName(name);
+  };
 
-        } else {
-            let _pokemonData = await Promise.all(data.map(async pokemon => {
-                let pokemonRecord = await getPokemon(pokemon)
+  
 
-                console.log('pokemonRecord', pokemonRecord)
-                return  pokemonRecord
-            }))
-            setPokemonData(_pokemonData)
-        }
+  const loadPokemon = async data => {
+    let _pokemonData = await Promise.all(
+      data.map(async pokemon => {
+        let pokemonRecord = await getPokemon(pokemon);
 
-        // let _pokemonData = await Promise.all(data.map(async pokemon => {
-        //     let pokemonRecord = await getPokemon(pokemon)
-        //     return pokemonRecord
-        // }))
+        return pokemonRecord;
+      })
+    );
+    setPokemonData(_pokemonData);
+  };
 
-        // if ((search && (pokemonType !== 'All'))){
-        //     searchByType(_pokemonData)
-        // } else {
-        //     setPokemonData(_pokemonData)
-        // }
+  const loadAllPokemons = async data => {
+    let _pokemonData = await Promise.all(
+      data.map(async pokemon => {
+        let pokemonRecord = await getSearchPokemon(pokemon);
 
+        return pokemonRecord;
+      })
+    );
+    setPokemonAllData(_pokemonData);
+  };
 
-        // if (searchName) {
-        //     searchByName(_pokemonData)
-        // } else {
-        //     setPokemonData(_pokemonData);
-        // }
-
-
-    }
-
-    return { pokemonData, loading, next, prev, switchViews, switchType, findByName, pokemonType }
-}
+  return {
+    pokemonData,
+    loading,
+    next,
+    prev,
+    switchViews,
+    switchType,
+    findByName,
+    pokemonType
+  };
+};
